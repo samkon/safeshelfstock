@@ -1,0 +1,10 @@
+{
+  "name": "samkon/safeshelfstock",
+  "description": "stock base management for multi shelfed safe",
+  "require": {
+    "php": "^5.6.30 || ^7.0"
+  },
+  "autoload": {
+    "files": ["conf/loader.php"]
+  }
+}
