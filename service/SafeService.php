@@ -17,16 +17,37 @@ class SafeService extends BaseService implements BaseServiceInterface
         return new Safe();
     }
 
+
     /**
      * @param Safe $safe
+     * @param Bottle $bottle
+     * @return bool
+     */
+    public function addBottle(Safe $safe, Bottle $bottle)
+    {
+        return $safe->addBottle($bottle);
+    }
+
+    /**
+     * @param Safe $safe
+     * @param Bottle $bottle
+     * @return bool
+     */
+    public function removeBottle(Safe $safe, Bottle $bottle)
+    {
+        return $safe->removeBottle($bottle);
+    }
+
+    /**
+     * @param Safe $safe
+     * @param Bottle $bottle
      * @param int $count
      * @return Safe
      */
-    public function addBottles(Safe $safe, int $count)
+    public function addMultipleBottles(Safe $safe, Bottle $bottle, int $count)
     {
-        // add bottles
         for ($i=0;$i<$count;$i++) {
-            $safe->addBottle();
+            $this->addBottle($safe, $bottle);
         }
 
         return $safe;
@@ -34,34 +55,16 @@ class SafeService extends BaseService implements BaseServiceInterface
 
     /**
      * @param Safe $safe
+     * @param Bottle $bottle
      * @param int $count
      * @return Safe
      */
-    public function removeBottles(Safe $safe, int $count)
+    public function removeMultipleBottles(Safe $safe, Bottle $bottle, int $count)
     {
-        // remove bottles
         for ($i=0;$i<$count;$i++) {
-            $safe->removeBottle();
+            $this->removeBottle($safe, $bottle);
         }
 
         return $safe;
-    }
-
-    /**
-     * @param $safe
-     * @return Safe
-     */
-    public function addSingleBottle($safe)
-    {
-        $this->addBottles($safe, 1);
-    }
-
-    /**
-     * @param $safe
-     * @return Safe
-     */
-    public function removeSingleBottle($safe)
-    {
-        $this->removeBottles($safe, 1);
     }
 }

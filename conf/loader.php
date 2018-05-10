@@ -6,6 +6,7 @@
  * Time: 22:58
  */
 
+require_once __DIR__ . '/../model/Bottle.php';
 require_once __DIR__ . '/../model/Safe.php';
 require_once __DIR__ . '/../model/Shelf.php';
 require_once __DIR__ . '/../service/BaseService.php';

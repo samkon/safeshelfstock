@@ -15,27 +15,31 @@ interface BaseServiceInterface
 
     /**
      * @param Safe $safe
-     * @param int $count
-     * @return Safe
+     * @param Bottle $bottle
+     * @return bool
      */
-    public function addBottles(Safe $safe, int $count);
-
-    /**
-     * @param $safe
-     * @return Safe
-     */
-    public function addSingleBottle($safe);
+    public function addBottle(Safe $safe, Bottle $bottle);
 
     /**
      * @param Safe $safe
+     * @param Bottle $bottle
+     * @return bool
+     */
+    public function removeBottle(Safe $safe, Bottle $bottle);
+
+    /**
+     * @param Safe $safe
+     * @param Bottle $bottle
      * @param int $count
      * @return Safe
      */
-    public function removeBottles(Safe $safe, int $count);
+    public function addMultipleBottles(Safe $safe, Bottle $bottle, int $count);
 
     /**
-     * @param $safe
+     * @param Safe $safe
+     * @param Bottle $bottle
+     * @param int $count
      * @return Safe
      */
-    public function removeSingleBottle($safe);
+    public function removeMultipleBottles(Safe $safe, Bottle $bottle, int $count);
 }

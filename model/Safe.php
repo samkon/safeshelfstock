@@ -96,9 +96,10 @@ class Safe
     }
 
     /**
+     * @param Bottle $bottle
      * @return bool
      */
-    public function addBottle() {
+    public function addBottle(Bottle $bottle) {
         if ($this->isDoorClosed()) {
             return false;
         }
@@ -111,8 +112,8 @@ class Safe
 
         /** @var Shelf $shelf */
         foreach ($this->shelfs as $shelf) {
-            if ($shelf->getStatus() != Shelf::SHELF_STATUS_FULL && $shelf->addBottle()) {
-                $this->setSafeStock($this->getSafeStock() + 1);
+            if ($shelf->getStatus() != Shelf::SHELF_STATUS_FULL && $shelf->addBottle($bottle)) {
+                $this->setSafeStock($this->getSafeStock() + $bottle->getVolume());
                 $success = true;
                 break;
             }
@@ -128,9 +129,10 @@ class Safe
     }
 
     /**
+     * @param Bottle $bottle
      * @return bool
      */
-    public function removeBottle() {
+    public function removeBottle(Bottle $bottle) {
 
         if ($this->isDoorClosed()) {
             return false;
@@ -140,8 +142,8 @@ class Safe
 
         /** @var Shelf $shelf */
         foreach ($this->shelfs as $shelf) {
-            if ($shelf->getStatus() != Shelf::SHELF_STATUS_EMPTY && $shelf->removeBottle()) {
-                $this->setSafeStock($this->getSafeStock() - 1);
+            if ($shelf->getStatus() != Shelf::SHELF_STATUS_EMPTY && $shelf->removeBottle($bottle)) {
+                $this->setSafeStock($this->getSafeStock() - $bottle->getVolume());
                 $success = true;
                 break;
             }

@@ -14,23 +14,29 @@ $safeService = new SafeService();
 /** @var Safe $safe */
 $safe = $safeService->createSafe();
 
-// add 21 bottle
-$safeService->addBottles($safe, 21);
+$bottle = new Bottle(Bottle::BOTTLE_CL_33);
 
-// remove 5 bottle
-$safeService->removeBottles($safe, 5);
+// add 21 33cl bottle
+$safeService->addMultipleBottles($safe, $bottle,21);
 
-// add single bottle
-$safeService->addSingleBottle($safe);
+// remove 5 33cl bottle
+$safeService->removeMultipleBottles($safe, $bottle,5);
 
-// add 40 bottle
-$safeService->addBottles($safe, 40);
+$bottle = new Bottle(Bottle::BOTTLE_CL_50);
 
-// remove 12 bottle
-$safeService->removeBottles($safe,  12);
+// add single 50cl bottle
+$safeService->addBottle($safe, $bottle);
 
-// remove single bottle
-$safeService->removeSingleBottle($safe);
+// add 15 50cl bottle
+$safeService->addMultipleBottles($safe, $bottle, 15);
+
+// remove 12 50cl bottle
+$safeService->removeMultipleBottles($safe, $bottle, 12);
+
+$bottle = new Bottle(Bottle::BOTTLE_CL_33);
+
+// remove single 33cl bottle
+$safeService->removeBottle($safe, $bottle);
 
 /*
  * also object can be used directly in similar way

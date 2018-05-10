@@ -20,6 +20,9 @@ class Shelf
     /** @var int $status */
     private $status;
 
+    /** @var $bottles[] array */
+    private $bottles = [];
+
     public function __construct()
     {
         $this->setStatus(self::SHELF_STATUS_EMPTY);
@@ -67,25 +70,47 @@ class Shelf
     }
 
     /**
+     * @return mixed
+     */
+    public function getBottles()
+    {
+        return $this->bottles;
+    }
+
+    /**
+     * @param mixed $bottles
+     */
+    public function setBottles($bottles)
+    {
+        $this->bottles = $bottles;
+    }
+
+    /**
+     * @param Bottle $bottle
      * @return bool
      */
-    public function addBottle() {
+    public function addBottle(Bottle $bottle) {
         if ($this->getStatus() == self::SHELF_STATUS_FULL) {
             return false;
         }
-        if ($this->stock == self::MAX_BOTTLE_COUNT_PER_SHELF) {
+        if ($this->getStock() == self::MAX_BOTTLE_COUNT_PER_SHELF) {
+            return false;
+        }
+        if ($this->getStock() + $bottle->getVolume() > self::MAX_BOTTLE_COUNT_PER_SHELF) {
             return false;
         }
 
-        $this->setStock($this->getStock() + 1);
+        $this->getBottles()[] = $bottle;
+        $this->setStock($this->getStock() + $bottle->getVolume());
 
         return true;
     }
 
     /**
+     * @param Bottle $bottle
      * @return bool
      */
-    public function removeBottle() {
+    public function removeBottle(Bottle $bottle) {
         if ($this->getStatus() == self::SHELF_STATUS_EMPTY) {
             $this->setStock(0);
             return false;
@@ -98,9 +123,21 @@ class Shelf
             $this->setStatus(self::SHELF_STATUS_PARTLY_FULL);
         }
 
-        $this->setStock($this->getStock() - 1);
+        if ($this->getStock() - $bottle->getVolume() < 0) {
+            return false;
+        }
 
-        return true;
+        /** @var Bottle $b */
+        foreach ($this->getBottles() as $key => $b) {
+            if ($bottle->getCl() == $b->getCl()) {
+                unset($this->getBottles()[$key]);
+                $this->setStock($this->getStock() - $bottle->getVolume());
+
+                return true;
+            }
+        }
+
+        return false;
     }
 
 
