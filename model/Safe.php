@@ -16,6 +16,9 @@ class Safe
     /** @var int $safeStock */
     private $safeStock = 0;
 
+    /** @var int $safeVolume */
+    private $safeVolume = 0;
+
     /** @var int $status */
     private $status = Shelf::SHELF_STATUS_EMPTY;
 
@@ -96,6 +99,22 @@ class Safe
     }
 
     /**
+     * @return int
+     */
+    public function getSafeVolume()
+    {
+        return $this->safeVolume;
+    }
+
+    /**
+     * @param int $safeVolume
+     */
+    public function setSafeVolume($safeVolume)
+    {
+        $this->safeVolume = $safeVolume;
+    }
+
+    /**
      * @param Bottle $bottle
      * @return bool
      */
@@ -113,7 +132,8 @@ class Safe
         /** @var Shelf $shelf */
         foreach ($this->shelfs as $shelf) {
             if ($shelf->getStatus() != Shelf::SHELF_STATUS_FULL && $shelf->addBottle($bottle)) {
-                $this->setSafeStock($this->getSafeStock() + $bottle->getVolume());
+                $this->setSafeStock($this->getSafeStock() + 1);
+                $this->setSafeVolume($this->getSafeVolume() + $bottle->getVolume());
                 $success = true;
                 break;
             }
@@ -143,7 +163,8 @@ class Safe
         /** @var Shelf $shelf */
         foreach ($this->shelfs as $shelf) {
             if ($shelf->getStatus() != Shelf::SHELF_STATUS_EMPTY && $shelf->removeBottle($bottle)) {
-                $this->setSafeStock($this->getSafeStock() - $bottle->getVolume());
+                $this->setSafeStock($this->getSafeStock() - 1);
+                $this->setSafeVolume($this->getSafeVolume() - $bottle->getVolume());
                 $success = true;
                 break;
             }

@@ -16,8 +16,15 @@ $safe = $safeService->createSafe();
 
 $bottle = new Bottle(Bottle::BOTTLE_CL_33);
 
-// add 21 33cl bottle
-$safeService->addMultipleBottles($safe, $bottle,21);
+// add 25 33cl bottle
+$safeService->addMultipleBottles($safe, $bottle,25);
+
+$bottle = new Bottle(Bottle::BOTTLE_CL_50);
+
+// add 6 50cl bottle
+$safeService->addMultipleBottles($safe, $bottle,6);
+
+$bottle = new Bottle(Bottle::BOTTLE_CL_33);
 
 // remove 5 33cl bottle
 $safeService->removeMultipleBottles($safe, $bottle,5);

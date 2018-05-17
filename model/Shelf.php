@@ -23,6 +23,9 @@ class Shelf
     /** @var $bottles[] array */
     private $bottles = [];
 
+    /** @var int $shelfVolume */
+    private $shelfVolume = 0;
+
     public function __construct()
     {
         $this->setStatus(self::SHELF_STATUS_EMPTY);
@@ -86,6 +89,22 @@ class Shelf
     }
 
     /**
+     * @return int
+     */
+    public function getShelfVolume()
+    {
+        return $this->shelfVolume;
+    }
+
+    /**
+     * @param int $shelfVolume
+     */
+    public function setShelfVolume($shelfVolume)
+    {
+        $this->shelfVolume = $shelfVolume;
+    }
+
+    /**
      * @param Bottle $bottle
      * @return bool
      */
@@ -93,15 +112,16 @@ class Shelf
         if ($this->getStatus() == self::SHELF_STATUS_FULL) {
             return false;
         }
-        if ($this->getStock() == self::MAX_BOTTLE_COUNT_PER_SHELF) {
+        if ($this->getShelfVolume() == self::MAX_BOTTLE_COUNT_PER_SHELF) {
             return false;
         }
-        if ($this->getStock() + $bottle->getVolume() > self::MAX_BOTTLE_COUNT_PER_SHELF) {
+        if ($this->getShelfVolume() + $bottle->getVolume() > self::MAX_BOTTLE_COUNT_PER_SHELF) {
             return false;
         }
 
-        $this->getBottles()[] = $bottle;
-        $this->setStock($this->getStock() + $bottle->getVolume());
+        $this->bottles[] = $bottle;
+        $this->setStock($this->getStock() + 1);
+        $this->setShelfVolume($this->getShelfVolume() + $bottle->getVolume());
 
         return true;
     }
@@ -113,6 +133,7 @@ class Shelf
     public function removeBottle(Bottle $bottle) {
         if ($this->getStatus() == self::SHELF_STATUS_EMPTY) {
             $this->setStock(0);
+            $this->setShelfVolume(0);
             return false;
         }
         else if ($this->getStock() == 0) {
@@ -123,15 +144,16 @@ class Shelf
             $this->setStatus(self::SHELF_STATUS_PARTLY_FULL);
         }
 
-        if ($this->getStock() - $bottle->getVolume() < 0) {
+        if ($this->getShelfVolume() - $bottle->getVolume() < 0) {
             return false;
         }
 
         /** @var Bottle $b */
         foreach ($this->getBottles() as $key => $b) {
             if ($bottle->getCl() == $b->getCl()) {
-                unset($this->getBottles()[$key]);
-                $this->setStock($this->getStock() - $bottle->getVolume());
+                unset($this->bottles[$key]);
+                $this->setStock($this->getStock() - 1);
+                $this->setShelfVolume($this->getShelfVolume() - $bottle->getVolume());
 
                 return true;
             }
